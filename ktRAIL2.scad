@@ -18,7 +18,7 @@ h3 = h-h2;
 //translate( [-40, 40, 0] ) rotate( [0, 0, 45] ) cube( [w, 50, h] );
 //translate( [0, -50, 0] ) cube( [w, 50, h] );
 joint_m();
-istep = 1;
+/*istep = 1;
 inr = 57;
 ined = 56;
 ostep = 0.1;
@@ -39,8 +39,12 @@ curve_r(inr, 0, ined, istep);
         translate( [t+m/2-5/2, -3, 0] ) cube( [5, 3, h3] );
         translate( [w-(t+m/2)-5/2, -3, 0] ) cube( [5, 3, h3] );
     }
-}
-/*translate( [(inr-w)*cos(ined)-(inr-w), (inr-w)*sin(ined), 0] ) rotate( [0, 0, ined] )
+}*/
+istep = 1;
+inr = w;
+ined = 45;
+curve_r(inr, 0, ined, istep);
+translate( [(inr-w)*cos(ined)-(inr-w), (inr-w)*sin(ined), 0] ) rotate( [0, 0, ined] )
 {
     straight(56.6-11);
     translate( [0, 56.6-11, 0] )
@@ -49,9 +53,11 @@ curve_r(inr, 0, ined, istep);
         {
             straight(11,1);
             translate( [0, 11, 0] ) joint_f();
+            #translate( [t+m/2-5/2, 11-3, 0] ) cube( [5, 3, h3] );
+            #translate( [w-(t+m/2)-5/2, 11-3, 0] ) cube( [5, 3, h3] );
         }
     }
-}*/
+}
 
 module curve_l(r=w, start=0, end=90, step=1, f=0)
 {
