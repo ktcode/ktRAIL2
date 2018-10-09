@@ -11,53 +11,70 @@ h = 8.3;
 h2 = 5;
 h3 = h-h2;
 
+A=1;
+B=1;
 
 
 
-
-//translate( [-40, 40, 0] ) rotate( [0, 0, 45] ) cube( [w, 50, h] );
+//translate( [-40, 40+215/2, 0] ) rotate( [0, 0, 45] ) cube( [w, 50, h] );
 //translate( [0, -50, 0] ) cube( [w, 50, h] );
-joint_m();
-/*istep = 1;
-inr = 57;
-ined = 56;
-ostep = 0.1;
-outr = 300;
-outed = 8.6;
-curve_r(inr, 0, ined, istep);
+
+istep = 1;
+inr = 500;
+ined = 11;
+ostep = 1;
+outr = 153;
+outed = 34;
+
+if(A)
+{
+    joint_m();
+    curve_r(inr, 0, ined, istep);
     difference()
     {
-    union()
-    {
-        translate( [-40, 40, 0] ) rotate( [0, 0, 45] ) joint_fw();
-        translate( [(inr-w)*cos(ined)-(inr-w), (inr-w)*sin(ined), 0] ) rotate( [0, 0, ined] ) curve_l(outr, 0, outed, ostep, 0);
-    }
-    translate( [-40, 40, -gap1] ) rotate( [0, 0, 45] )
-    {
-        cube( [w+10, 50, h+gap2] );
-        joint_f();
-        translate( [t+m/2-5/2, -3, 0] ) cube( [5, 3, h3] );
-        translate( [w-(t+m/2)-5/2, -3, 0] ) cube( [5, 3, h3] );
-    }
-}*/
-istep = 1;
-inr = w;
-ined = 45;
-curve_r(inr, 0, ined, istep);
-translate( [(inr-w)*cos(ined)-(inr-w), (inr-w)*sin(ined), 0] ) rotate( [0, 0, ined] )
-{
-    straight(56.6-11);
-    translate( [0, 56.6-11, 0] )
-    {
-        difference()
+        union()
         {
-            straight(11,1);
-            translate( [0, 11, 0] ) joint_f();
-            #translate( [t+m/2-5/2, 11-3, 0] ) cube( [5, 3, h3] );
-            #translate( [w-(t+m/2)-5/2, 11-3, 0] ) cube( [5, 3, h3] );
+            translate( [(inr-w)*cos(ined)-(inr-w), (inr-w)*sin(ined), 0] ) rotate( [0, 0, ined] ) curve_r(outr, 0, outed-5, ostep, 0);
+            translate( [(inr-w)*cos(ined)-(inr-w), (inr-w)*sin(ined), 0] ) rotate( [0, 0, ined] ) curve_r(outr, outed-5, outed, ostep, 1);
+        }
+        translate( [-40, 40+215/2, 0] ) rotate( [0, 0, 45] )
+        {
+            joint_f();
+            translate( [t+m/2-5/2, -3, 0] ) cube( [5, 3, h3] );
+            translate( [w-(t+m/2)-5/2, -3, 0] ) cube( [5, 3, h3] );
         }
     }
 }
+
+istep2 = 1;
+inr2 = 500;
+ined2 = 11;
+ostep2 = 1;
+outr2 = 153;
+outed2 = 34;
+if(B)
+{
+    translate( [50, 0, 0] )
+    {
+        difference()
+        {
+            union()
+            {
+                curve_l(inr2, 0, 2, istep2, 1);
+                curve_l(inr2, 2, ined2, istep2, 0);
+            }
+            translate( [w, 0, 0] ) rotate( [0, 0, 180] )
+            {
+                joint_f();
+                translate( [t+m/2-5/2, -3, 0] ) cube( [5, 3, h3] );
+                translate( [w-(t+m/2)-5/2, -3, 0] ) cube( [5, 3, h3] );
+            }
+        }
+        translate( [(-inr2)*cos(-ined2)+(inr2), (-inr2)*sin(-ined2), 0] ) rotate( [0, 0, -ined2] ) curve_l(outr2, 0, outed2, ostep2, 0);
+        translate( [w+40-0.06, 40+215/2-0.3, 0] ) rotate( [0, 0, -45-180] ) joint_m();
+    }
+}
+
 
 module curve_l(r=w, start=0, end=90, step=1, f=0)
 {
