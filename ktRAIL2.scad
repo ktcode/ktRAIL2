@@ -16,15 +16,15 @@ B=1;
 
 
 
-//translate( [-40, 40+215/2, 0] ) rotate( [0, 0, 45] ) cube( [w, 50, h] );
+//translate( [-40, 51+215/2, 0] ) rotate( [0, 0, 45] ) cube( [w, 50, h] );
 //translate( [0, -50, 0] ) cube( [w, 50, h] );
 
 istep = 1;
-inr = 500;
+inr = 565;
 ined = 11;
-ostep = 1;
+ostep = 0.2;
 outr = 153;
-outed = 34;
+outed = 33.4;
 
 if(A)
 {
@@ -37,7 +37,7 @@ if(A)
             translate( [(inr-w)*cos(ined)-(inr-w), (inr-w)*sin(ined), 0] ) rotate( [0, 0, ined] ) curve_r(outr, 0, outed-5, ostep, 0);
             translate( [(inr-w)*cos(ined)-(inr-w), (inr-w)*sin(ined), 0] ) rotate( [0, 0, ined] ) curve_r(outr, outed-5, outed, ostep, 1);
         }
-        translate( [-40, 40+215/2, 0] ) rotate( [0, 0, 45] )
+        translate( [-40, 51+215/2, 0] ) rotate( [0, 0, 45] )
         {
             joint_f();
             translate( [t+m/2-5/2, -3, 0] ) cube( [5, 3, h3] );
@@ -46,12 +46,12 @@ if(A)
     }
 }
 
-istep2 = 1;
-inr2 = 500;
+istep2 = 0.2;
+inr2 = 565;
 ined2 = 11;
-ostep2 = 1;
+ostep2 = 0.2;
 outr2 = 153;
-outed2 = 34;
+outed2 = 33.4;
 if(B)
 {
     translate( [50, 0, 0] )
@@ -60,8 +60,8 @@ if(B)
         {
             union()
             {
-                curve_l(inr2, 0, 2, istep2, 1);
-                curve_l(inr2, 2, ined2, istep2, 0);
+                curve_l(inr2, 0, 1.2, istep2, 1);
+                curve_l(inr2, 1.2, ined2, istep2, 0);
             }
             translate( [w, 0, 0] ) rotate( [0, 0, 180] )
             {
@@ -71,7 +71,7 @@ if(B)
             }
         }
         translate( [(-inr2)*cos(-ined2)+(inr2), (-inr2)*sin(-ined2), 0] ) rotate( [0, 0, -ined2] ) curve_l(outr2, 0, outed2, ostep2, 0);
-        translate( [w+40-0.06, 40+215/2-0.3, 0] ) rotate( [0, 0, -45-180] ) joint_m();
+        translate( [w+40+0.25, 51+215/2+0.25, 0] ) rotate( [0, 0, -45-180+0.5] ) joint_m();
     }
 }
 
@@ -91,7 +91,7 @@ module curve_l(r=w, start=0, end=90, step=1, f=0)
     c4b = -(r-w+t+t+m);
     c4a = -(r-t-m-t);
     
-    for( i=[-start: -step: -end+1] )
+    for( i=[-start: -step: -end+step] )
     {
         a0 = [[a0a*cos(i),a0a*sin(i)],[a0b*cos(i),a0b*sin(i)],[a0b*cos(i-step),a0b*sin(i-step)],[a0a*cos(i-step),a0a*sin(i-step)]];
         b0 = [0,1,2,3];
@@ -141,7 +141,7 @@ module curve_r(r=w, start=0, end=90, step=1, f=0)
     c4a = r-w+t+t+m;
     c4b = r-t-m-t;
     
-    for( i=[start: step: end-1] )
+    for( i=[start: step: end-step] )
     {
         a0 = [[a0a*cos(i),a0a*sin(i)],[a0b*cos(i),a0b*sin(i)],[a0b*cos(i+step),a0b*sin(i+step)],[a0a*cos(i+step),a0a*sin(i+step)]];
         b0 = [0,1,2,3];
@@ -176,50 +176,6 @@ module curve_r(r=w, start=0, end=90, step=1, f=0)
 }
 
 
-module curve_r2(r=w, start=0, end=90, step=1, f=0)
-{
-    a0a = r-w;
-    a0b = r;
-    c0a = r-w;
-    c0b = r-w+t;
-    c1a = r-w+t+m;
-    c1b = r-w+t+t+m;
-    c2a = r-t-m-t;
-    c2b = r-t-m;
-    c3a = r-t;
-    c3b = r;
-    c4a = r-w+t+t+m;
-    c4b = r-t-m-t;
-    
-    for( i=[start: step: end-1] )
-    {
-        a0 = [[a0a*cos(i),a0a*sin(i)],[a0b*cos(i),a0b*sin(i)],[a0b*cos(i+step),a0b*sin(i+step)],[a0a*cos(i+step),a0a*sin(i+step)]];
-        b0 = [0,1,2,3];
-        a = concat( a0 );
-        b = [b0];
-        translate( [-r+w, 0, 0] ) linear_extrude( height=h2 ) polygon( a, b );
-        
-        c0 = [[c0a*cos(i),c0a*sin(i)],[c0b*cos(i),c0b*sin(i)],[c0b*cos(i+step),c0b*sin(i+step)],[c0a*cos(i+step),c0a*sin(i+step)]];
-        d0 = [0,1,2,3];
-        c3 = [[c3a*cos(i),c3a*sin(i)],[c3b*cos(i),c3b*sin(i)],[c3b*cos(i+step),c3b*sin(i+step)],[c3a*cos(i+step),c3a*sin(i+step)]];
-        d3 = [4,5,6,7];
-        c4 = [[c4a*cos(i),c4a*sin(i)],[c4b*cos(i),c4b*sin(i)],[c4b*cos(i+step),c4b*sin(i+step)],[c4a*cos(i+step),c4a*sin(i+step)]];
-        d4 = [8,9,10,11];
-
-        if (f==1)
-        {
-            c = concat( c0, c3, c4 );
-            d = [d0,d3,d4];
-            translate( [-r+w, 0, h2] ) linear_extrude( height=h3 ) polygon( c, d );
-        }
-        else
-        {
-            c = concat( c0, c3 );
-            d = [d0,d3];
-            translate( [-r+w, 0, h2] ) linear_extrude( height=h3 ) polygon( c, d );
-        }
-    }
-}
 
 
 module straight(l, f=0)
@@ -276,13 +232,4 @@ module joint_f()
     a = concat( a0 );
     b = [b0];
     translate( [w/2, gap1, -gap1] ) linear_extrude( height=h+gap2 ) polygon( a, b );
-}
-
-module joint_fw()
-{
-    a0 = [[8,0],[8.5,-12],[-7,-12],[-7.5,0]];
-    b0 = [0,1,2,3];
-    a = concat( a0 );
-    b = [b0];
-    translate( [w/2, gap1, 0] ) linear_extrude( height=h ) polygon( a, b );
 }
